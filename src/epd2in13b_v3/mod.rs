@@ -7,6 +7,8 @@
 //! - [Waveshare Python driver](https://github.com/waveshare/e-Paper/blob/master/RaspberryPi%26JetsonNano/python/lib/waveshare_epd/epd2in13_V2.py)
 //! - [Controller Datasheet SS1780](http://www.e-paper-display.com/download_detail/downloadsId=682.html)
 //!
+extern crate std;
+use std::println;
 
 use embedded_hal::{
     blocking::{delay::*, spi::Write},
@@ -61,11 +63,17 @@ where
 {
     fn init(&mut self, spi: &mut SPI, delay: &mut DELAY) -> Result<(), SPI::Error> {
         // HW reset
+        println!("init");
         self.interface.reset(delay, 10);
+        println!("reset");
         self.wait_until_idle();
+        println!("not busy");
         self.command(spi, Command::SwReset)?;
+        println!("swreset");
         self.wait_until_idle();
+        println!("not busy again");
         self.set_lut(spi, None)?;
+        println!("set lut");
         self.set_driver_output(
             spi,
             DriverOutput {
@@ -76,9 +84,14 @@ where
             },
         )?;
 
+        println!("set driver output");
+
         self.set_vcom_register(spi, (-21).vcom())?;
 
+        println!("set vcom register");
         self.wait_until_idle();
+
+        println!("success!");
         Ok(())
     }
 }
