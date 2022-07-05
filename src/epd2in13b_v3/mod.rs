@@ -86,11 +86,6 @@ where
         self.wait_until_idle();
         println!("not busy");
 
-        self.set_vcom_register(spi, (-21).vcom())?;
-        println!("set vcom register");
-        self.wait_until_idle();
-        println!("not busy");
-
         println!("success!");
         Ok(())
     }
