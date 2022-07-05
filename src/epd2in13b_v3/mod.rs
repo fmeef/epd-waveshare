@@ -86,7 +86,7 @@ where
         println!("set driver output");
         self.wait_until_idle();
         println!("not busy");
-        self.set_vcom_register(spi, 0.vcom())?;
+        self.set_vcom_register(spi)?;
         self.wait_until_idle();
         println!("success!");
         Ok(())
@@ -274,7 +274,7 @@ where
         Ok(())
     }
 
-    fn set_vcom_register(&mut self, spi: &mut SPI, vcom: Vcom) -> Result<(), SPI::Error> {
+    fn set_vcom_register(&mut self, spi: &mut SPI) -> Result<(), SPI::Error> {
         self.cmd_with_data(spi, Command::WriteVcomRegister, &[0x77 as u8])
     }
 
