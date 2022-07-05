@@ -79,7 +79,7 @@ where
             DriverOutput {
                 scan_is_linear: true,
                 scan_g0_is_first: true,
-                scan_dir_incr: true,
+                scan_dir_incr: false,
                 width: (HEIGHT - 1) as u16,
             },
         )?;
@@ -274,7 +274,7 @@ where
     }
 
     fn set_driver_output(&mut self, spi: &mut SPI, output: DriverOutput) -> Result<(), SPI::Error> {
-        self.cmd_with_data(spi, Command::DriverOutputControl, &output.to_bytes())
+        self.cmd_with_data(spi, Command::DriverOutputControl, &[0x68, 0x00, 0xd4 as u8])
     }
 
     fn command(&mut self, spi: &mut SPI, command: Command) -> Result<(), SPI::Error> {
