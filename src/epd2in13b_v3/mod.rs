@@ -87,7 +87,6 @@ where
         self.wait_until_idle(spi)?;
         println!("not busy");
         self.set_vcom_register(spi)?;
-        self.wait_until_idle(spi)?;
         println!("success!");
         Ok(())
     }
@@ -144,7 +143,7 @@ where
         self.cmd_with_data(spi, Command::WriteRam, buffer)?;
 
         println!("writeram");
-        //   self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
+        self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
         println!("writeram red");
         Ok(())
     }
@@ -173,7 +172,7 @@ where
 
         self.cmd_with_data(spi, Command::WriteRam, buffer)?;
 
-        // self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
+        self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
 
         Ok(())
     }
@@ -210,14 +209,12 @@ where
             buffer_len(WIDTH as usize, HEIGHT as usize) as u32,
         )?;
 
-        //self.command(spi, Command::WriteRamRed)?;
-        /*
+        self.command(spi, Command::WriteRamRed)?;
         self.interface.data_x_times(
             spi,
             color,
             buffer_len(WIDTH as usize, HEIGHT as usize) as u32,
         )?;
-        */
         Ok(())
     }
 
