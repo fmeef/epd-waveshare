@@ -68,8 +68,6 @@ where
         println!("reset");
         self.wait_until_idle();
         println!("not busy");
-        self.command(spi, Command::SwReset)?;
-        println!("swreset");
         self.wait_until_idle();
         println!("not busy again");
         self.set_lut(spi, None)?;
@@ -193,7 +191,9 @@ where
         delay: &mut DELAY,
     ) -> Result<(), SPI::Error> {
         self.update_frame(spi, buffer, delay)?;
+        println!("update frame");
         self.display_frame(spi, delay)?;
+        println!("display frame");
         Ok(())
     }
 
