@@ -86,7 +86,8 @@ where
         println!("set driver output");
         self.wait_until_idle(spi)?;
         println!("not busy");
-        self.set_vcom_register(spi)?;
+        // self.set_vcom_register(spi)?;
+        // self.wait_until_idle(spi)?;
         println!("success!");
         Ok(())
     }
@@ -179,8 +180,9 @@ where
 
     /// Never use directly this function when using partial refresh, or also
     /// keep the base buffer in syncd using `set_partial_base_buffer` function.
-    fn display_frame(&mut self, spi: &mut SPI, _delay: &mut DELAY) -> Result<(), SPI::Error> {
+    fn display_frame(&mut self, spi: &mut SPI, delay: &mut DELAY) -> Result<(), SPI::Error> {
         self.command(spi, Command::DisplayRefresh)?;
+        delay.delay_ms(100);
         self.wait_until_idle(spi)?;
         Ok(())
     }
@@ -273,7 +275,7 @@ where
     }
 
     fn set_vcom_register(&mut self, spi: &mut SPI) -> Result<(), SPI::Error> {
-        self.cmd_with_data(spi, Command::WriteVcomRegister, &[0x77 as u8])
+        self.cmd_with_data(spi, Command::WriteVcomRegister, &[0x17 as u8])
     }
 
     fn set_driver_output(&mut self, spi: &mut SPI, output: DriverOutput) -> Result<(), SPI::Error> {
