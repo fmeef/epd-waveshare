@@ -86,7 +86,8 @@ where
         println!("set driver output");
         self.wait_until_idle();
         println!("not busy");
-
+        self.set_vcom_register(spi, 0.vcom())?;
+        self.wait_until_idle();
         println!("success!");
         Ok(())
     }
