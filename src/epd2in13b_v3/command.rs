@@ -11,7 +11,6 @@ use bit_field::BitField;
 #[allow(dead_code)]
 #[derive(Copy, Clone)]
 pub(crate) enum Command {
-    SwReset = 0x04,
     DriverOutputControl = 0x61,
     WriteVcomRegister = 0x50,
     WriteRamRed = 0x13,

@@ -68,10 +68,10 @@ where
         println!("reset");
         self.wait_until_idle();
         println!("not busy");
-        self.wait_until_idle();
-        println!("not busy again");
         self.set_lut(spi, None)?;
         println!("set lut");
+        self.wait_until_idle();
+        println!("not busy");
         self.set_driver_output(
             spi,
             DriverOutput {
@@ -83,10 +83,14 @@ where
         )?;
 
         println!("set driver output");
+        self.wait_until_idle();
+        println!("not busy");
 
         self.set_vcom_register(spi, (-21).vcom())?;
-
         println!("set vcom register");
+        self.wait_until_idle();
+        println!("not busy");
+
         println!("success!");
         Ok(())
     }
@@ -140,10 +144,11 @@ where
         _delay: &mut DELAY,
     ) -> Result<(), SPI::Error> {
         assert!(buffer.len() == buffer_len(WIDTH as usize, HEIGHT as usize));
-
         self.cmd_with_data(spi, Command::WriteRam, buffer)?;
 
+        println!("writeram");
         self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
+        println!("writeram red");
         Ok(())
     }
 
@@ -274,7 +279,7 @@ where
     }
 
     fn set_driver_output(&mut self, spi: &mut SPI, output: DriverOutput) -> Result<(), SPI::Error> {
-        self.cmd_with_data(spi, Command::DriverOutputControl, &[0x68, 0x00, 0xd4 as u8])
+        self.cmd_with_data(spi, Command::DriverOutputControl, &[0x68, 0x00, 0xd4])
     }
 
     fn command(&mut self, spi: &mut SPI, command: Command) -> Result<(), SPI::Error> {
