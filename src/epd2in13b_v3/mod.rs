@@ -67,11 +67,11 @@ where
         self.interface.reset(delay, 10);
         delay.delay_ms(10);
         println!("reset");
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         println!("not busy");
         self.set_lut(spi, None)?;
         println!("set lut");
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         println!("not busy");
         self.set_driver_output(
             spi,
@@ -84,10 +84,10 @@ where
         )?;
 
         println!("set driver output");
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         println!("not busy");
         self.set_vcom_register(spi)?;
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         println!("success!");
         Ok(())
     }
@@ -127,9 +127,9 @@ where
     }
 
     fn sleep(&mut self, spi: &mut SPI, _delay: &mut DELAY) -> Result<(), SPI::Error> {
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         self.cmd_with_data(spi, Command::WriteVcomRegister, &[0xf7 as u8])?;
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         self.command(spi, Command::PowerOff)?;
         self.cmd_with_data(spi, Command::DeepSleep, &[0xa5 as u8])
     }
@@ -181,9 +181,9 @@ where
     /// Never use directly this function when using partial refresh, or also
     /// keep the base buffer in syncd using `set_partial_base_buffer` function.
     fn display_frame(&mut self, spi: &mut SPI, _delay: &mut DELAY) -> Result<(), SPI::Error> {
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         self.command(spi, Command::DisplayRefresh)?;
-        self.wait_until_idle();
+        self.wait_until_idle(spi)?;
         Ok(())
     }
 
@@ -295,8 +295,10 @@ where
         self.interface.cmd_with_data(spi, command, data)
     }
 
-    fn wait_until_idle(&mut self) {
+    fn wait_until_idle(&mut self, spi: &mut SPI) -> Result<(), SPI::Error> {
+        self.command(spi, Command::BusyPoke)?;
         let _ = self.interface.wait_until_idle(IS_BUSY_LOW);
+        Ok(())
     }
 }
 

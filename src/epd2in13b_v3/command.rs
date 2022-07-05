@@ -19,6 +19,7 @@ pub(crate) enum Command {
     DisplayRefresh = 0x12,
     PowerOff = 0x02,
     DeepSleep = 0x07,
+    BusyPoke = 0x71,
 }
 
 pub(crate) struct DriverOutput {
