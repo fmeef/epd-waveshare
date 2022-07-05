@@ -272,7 +272,7 @@ where
     }
 
     fn set_vcom_register(&mut self, spi: &mut SPI, vcom: Vcom) -> Result<(), SPI::Error> {
-        self.cmd_with_data(spi, Command::WriteVcomRegister, &[vcom.0])
+        self.cmd_with_data(spi, Command::WriteVcomRegister, &[0x77 as u8])
     }
 
     fn set_driver_output(&mut self, spi: &mut SPI, output: DriverOutput) -> Result<(), SPI::Error> {
