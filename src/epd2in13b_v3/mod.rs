@@ -65,6 +65,7 @@ where
         // HW reset
         println!("init");
         self.interface.reset(delay, 10);
+        delay.delay_ms(10);
         println!("reset");
         self.wait_until_idle();
         println!("not busy");
@@ -181,6 +182,7 @@ where
     fn display_frame(&mut self, spi: &mut SPI, _delay: &mut DELAY) -> Result<(), SPI::Error> {
         self.wait_until_idle();
         self.command(spi, Command::DisplayRefresh)?;
+        self.wait_until_idle();
         Ok(())
     }
 
