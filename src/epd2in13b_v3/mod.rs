@@ -143,8 +143,8 @@ where
         self.cmd_with_data(spi, Command::WriteRam, buffer)?;
 
         println!("writeram");
-        self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
-        println!("writeram red");
+        //   self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
+        // println!("writeram red");
         Ok(())
     }
 
@@ -172,7 +172,7 @@ where
 
         self.cmd_with_data(spi, Command::WriteRam, buffer)?;
 
-        self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
+        //   self.cmd_with_data(spi, Command::WriteRamRed, buffer)?;
 
         Ok(())
     }
@@ -180,7 +180,6 @@ where
     /// Never use directly this function when using partial refresh, or also
     /// keep the base buffer in syncd using `set_partial_base_buffer` function.
     fn display_frame(&mut self, spi: &mut SPI, _delay: &mut DELAY) -> Result<(), SPI::Error> {
-        self.wait_until_idle(spi)?;
         self.command(spi, Command::DisplayRefresh)?;
         self.wait_until_idle(spi)?;
         Ok(())
@@ -209,12 +208,14 @@ where
             buffer_len(WIDTH as usize, HEIGHT as usize) as u32,
         )?;
 
+        /*
         self.command(spi, Command::WriteRamRed)?;
         self.interface.data_x_times(
             spi,
             color,
             buffer_len(WIDTH as usize, HEIGHT as usize) as u32,
         )?;
+        */
         Ok(())
     }
 
