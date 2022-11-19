@@ -43,7 +43,7 @@ pub const HEIGHT: u32 = 250;
 pub const DEFAULT_BACKGROUND_COLOR: Color = Color::White;
 const IS_BUSY_LOW: bool = false;
 
-/// Epd2in13 (V2) driver
+/// Epd2in13 (V3) driver
 ///
 pub struct Epd2in13<SPI, CS, BUSY, DC, RST, DELAY> {
     /// Connection Interface
@@ -68,7 +68,7 @@ where
 {
     fn init(&mut self, spi: &mut SPI, delay: &mut DELAY) -> Result<(), SPI::Error> {
         // HW reset
-        self.interface.reset(delay, 10);
+        self.interface.reset(delay, 10, 10);
 
         if self.refresh == RefreshLut::Quick {
             self.set_vcom_register(spi, (-9).vcom())?;
@@ -560,7 +560,7 @@ where
     }
 
     fn wait_until_idle(&mut self) {
-        let _ = self.interface.wait_until_idle(IS_BUSY_LOW);
+        self.interface.wait_until_idle(IS_BUSY_LOW);
     }
 }
 

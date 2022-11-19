@@ -64,7 +64,7 @@ where
     fn init(&mut self, spi: &mut SPI, delay: &mut DELAY) -> Result<(), SPI::Error> {
         // HW reset
         println!("init");
-        self.interface.reset(delay, 10);
+        self.interface.reset(delay, 10, 10);
         delay.delay_ms(10);
         println!("reset");
         self.wait_until_idle(spi)?;
@@ -297,7 +297,7 @@ where
 
     fn wait_until_idle(&mut self, spi: &mut SPI) -> Result<(), SPI::Error> {
         self.command(spi, Command::BusyPoke)?;
-        let _ = self.interface.wait_until_idle(IS_BUSY_LOW);
+        self.interface.wait_until_idle(IS_BUSY_LOW);
         Ok(())
     }
 }
