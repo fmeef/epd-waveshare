@@ -1,10 +1,10 @@
-//! A Driver for the Waveshare 2.13" E-Ink Display (V2) via SPI
+//! A Driver for the Waveshare 2.13" E-Ink Display (V3) via SPI
 //!
 //! # References
 //!
 //! - [Waveshare product page](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT)
-//! - [Waveshare C driver](https://github.com/waveshare/e-Paper/blob/master/RaspberryPi%26JetsonNano/c/lib/e-Paper/EPD_2in13_V2.c)
-//! - [Waveshare Python driver](https://github.com/waveshare/e-Paper/blob/master/RaspberryPi%26JetsonNano/python/lib/waveshare_epd/epd2in13_V2.py)
+//! - [Waveshare C driver](https://github.com/waveshare/e-Paper/blob/master/RaspberryPi_JetsonNano/c/lib/e-Paper/EPD_2in13_V3.c)
+//! - [Waveshare Python driver](https://github.com/waveshare/e-Paper/blob/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epd2in9b_V3.py)
 //! - [Controller Datasheet SS1780](http://www.e-paper-display.com/download_detail/downloadsId=682.html)
 //!
 
