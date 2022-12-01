@@ -28,6 +28,18 @@ use self::command::{
 pub(crate) mod constants;
 use self::constants::{LUT_FULL_UPDATE, LUT_PARTIAL_UPDATE};
 
+macro_rules! frame_assert {
+    ($buffer:expr) => {
+        assert_eq!(
+            $buffer.len(),
+            crate::buffer_len(
+                crate::epd2in13_v2::WIDTH as usize,
+                crate::epd2in13_v2::HEIGHT as usize
+            )
+        );
+    };
+}
+
 /// Full size buffer for use with the 2in13 v2 EPD
 #[cfg(feature = "graphics")]
 pub type Display2in13 = crate::graphics::Display<
@@ -213,7 +225,7 @@ where
         buffer: &[u8],
         _delay: &mut DELAY,
     ) -> Result<(), SPI::Error> {
-        assert!(buffer.len() == buffer_len(WIDTH as usize, HEIGHT as usize));
+        frame_assert!(buffer);
         self.set_ram_area(spi, 0, 0, WIDTH - 1, HEIGHT - 1)?;
         self.set_ram_address_counters(spi, 0, 0)?;
 
@@ -578,5 +590,12 @@ mod tests {
         assert_eq!(WIDTH, 122);
         assert_eq!(HEIGHT, 250);
         assert_eq!(DEFAULT_BACKGROUND_COLOR, Color::White);
+    }
+
+    // test failure of 2in13 v2 update_frame(...) assert
+    #[test]
+    fn fail_2in13_v2() {
+        let display = Display2in13::default();
+        frame_assert!(display.buffer());
     }
 }
